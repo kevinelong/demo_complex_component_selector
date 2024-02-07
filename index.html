@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div, section {
+            border: 1px solid black;
+            min-height: 1em;
+        }
+        .datum{
+            display: inline-block;
+            margin: 1em;
+            padding: 1em
+        }
+    </style>
+    <script src="main.js"></script>
+</head>
+<body>
+    <div id="target"></div>    
+    <div id="target2"></div>    
+</body>
+<script>
+
+function item(datum, onclick){
+    return `<div class="datum" onclick="${onclick}">${datum}</div>`;
+}
+
+class UI{
+    constructor(data, target, itemMaker){
+        this.itemMaker = itemMaker;
+        this.data = data;
+        this.target=target;
+        this.render()
+    }
+    select(e){
+        console.log(e)
+        data.select(e.innerHTML)
+        this.render()
+    }
+    unselect(e){
+        console.log(e)
+        data.unselect(e.innerHTML)
+        this.render()
+    }
+    render(){
+        const output = document.createElement("div");
+        const input = document.createElement("input");
+        const matches = document.createElement("section");
+        const selected = document.createElement("section");
+        const save = document.createElement("button");
+        
+        input.setAttribute("placeholder", "filter to hide here");
+        matches.innerHTML = this.data.unselected.map(i => this.itemMaker(i, "ui.select(this)")).join("")
+        selected.innerHTML = this.data.selected.map(i => this.itemMaker(i, "ui.unselect(this)")).join("")
+
+        save.innerText="SAVE"
+
+        output.appendChild(input)
+        output.appendChild(matches)
+        output.appendChild(selected)
+        output.appendChild(save)
+
+        this.target.innerHTML = "";
+        this.target.appendChild(output);
+    }    
+}
+
+data = new AddAndSelect(["aaa", "bbb", "ccc"])
+ui = new UI(data, target, item)
+
+data2 = new AddAndSelect(["aaa", "bbb", "ccc"])
+ui2 = new UI(data2, target2, item)
+
+
+</script>
+</html>
